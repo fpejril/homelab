@@ -20,7 +20,7 @@ This is definitely a Linux-first homelab. In my day job I've mostly used AWS and
 
 While I'm not quite there yet, the end-goal of this homelab is to self-host publicly available services which are secure enough that I can have the confidence to host them from my own home.
 
-### Background
+## Some Background
 
 I think the most important parts of any good software are:
 
@@ -129,14 +129,14 @@ Other than this basic fabric, I'm also playing around right now with [prometheus
     │    │                            │                            │                        │
 [ Wireguard Container ]    [ Pi-hole Container ]     [ Nginx Proxy Manager ]       [ Others... ]
   - IP: 10.42.1.2             - IP: 10.42.1.3              - IP: 10.42.1.5
-  - wg0: 10.0.0.1/24          - DNS: fplabs.lan            - fplabs.lan HTTPS reverse proxy
+  - wg0: 10.0.0.1/24          - DNS: fplabs.lan            - HTTPS reverse proxy
   - Forwards to LAN
     │
     ├── VLANs on vmbr1 (broadcasted by pfSense) ─────────────────────────────────────────────┐
     │                                                                                        │
-    │   VLAN 10 (DMZ):   10.42.2.1/24   ──► Publicly exposed services                         │
-    │   VLAN 20 (K8S):   10.42.3.1/24   ──► Kubernetes cluster                                │
-    │   VLAN 30 (TEST):  10.42.4.1/24   ──► General experimentation                           │
+    │   VLAN 10 (DMZ):   10.42.2.1/24   ──► Publicly exposed services                        │
+    │   VLAN 20 (K8S):   10.42.3.1/24   ──► Kubernetes cluster                               │
+    │   VLAN 30 (TEST):  10.42.4.1/24   ──► General experimentation                          │
     │                                                                                        │
     └────────────────────────────────────────────────────────────────────────────────────────┘
                                  ▲
