@@ -92,7 +92,7 @@ Most recently I've started working on my own Kubernetes cluster. I'm not too far
 I'll probably make different choices as I learn more, but right now I'm using:
 
 - **Network**: `flannel`
-- **StorageClass**: `local-path-storage`
+- **StorageClass**: `longhorn`
 - **IngressClass**: `ingress-nginx`
 - **LoadBalancer**: `metallb`
 
