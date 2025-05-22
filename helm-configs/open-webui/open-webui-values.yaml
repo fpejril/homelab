@@ -1,0 +1,8 @@
+ollama:
+  enabled: false
+pipelines:
+  enabled: false
+service:
+  type: LoadBalancer
+  loadBalancerIP: 10.42.3.203
+

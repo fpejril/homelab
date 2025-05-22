@@ -1,0 +1,21 @@
+persistence:
+  enabled: true                   # turn on PVC creation
+  storageClassName: local-path    # match your default SC
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi                      # choose a size that fits your retention needs
+
+loki:
+  auth_enabled: false             # or as you prefer
+  server:
+    http_listen_port: 3100
+
+schemaConfig:                     # filesystem schema (single binary mode)
+  configs:
+    - from: 2020-10-24
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h

@@ -1,0 +1,10 @@
+grafana:
+  service:
+    loadBalancerIP: 10.42.3.201
+    type: LoadBalancer
+prometheus:
+  prometheusSpec:
+    maximumStartupDurationSeconds: 120
+  service:
+    loadBalancerIP: 10.42.3.203
+    type: LoadBalancer

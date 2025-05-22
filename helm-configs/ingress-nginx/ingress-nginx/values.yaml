@@ -1,0 +1,4 @@
+controller:
+  progressDeadlineSeconds: 600
+  service:
+    loadBalancerIP: 10.42.3.204
