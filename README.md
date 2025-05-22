@@ -1,74 +1,118 @@
 # fplabs-io/kubernetes
 
-This repository contains Helm chart configurations and Kubernetes custom resource definitions used to deploy and manage services across the fplabs Kubernetes clusters.
+This repository centralizes all Helmfile-driven deployments and associated Kubernetes manifests for the fplabs clusters.
 
-## Overview
+## Prerequisites
 
-The repository is organized into two main directories:
-
-- **`helm-configs/`** – Contains Helm value files and deployment instructions for managing services with Helm.
-- **`kube-configs/`** – Contains Kubernetes manifests (typically CRDs or additional resource definitions) that supplement certain Helm deployments.
-
-Each Helm deployment includes a `values.yaml` file for configuration and a `README.md` with instructions to install or upgrade the release.
-
-## Directory Structure
-```
-helm-configs/
-├── /
-│   └── /
-│       ├── README.md         # Installation instructions
-│       └── values.yaml       # Helm values file
-
-kube-configs/
-├── /
-│   └── crs.yaml              # Kubernetes manifests (CRDs, etc.)
-```
-### Examples
-
-- `helm-configs/monitoring/kube-prometheus-stack/values.yaml` – Configuration for Prometheus & Grafana.
-- `kube-configs/metallb-system/crs.yaml` – Layer 2 address pool config for MetalLB.
-
-## Usage
-
-### 1. Add Helm Repositories
-
-Each service README will define which Helm repo to use. For example:
+Make sure you have these tools installed and available in your `PATH`:
 
 ```bash
-helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
-helm repo update
+# macOS (Homebrew)
+brew install helm helmfile kustomize
+
+# Install the Helm Diff plugin for `helmfile diff`
+helm plugin install https://github.com/databus23/helm-diff
 ```
 
-### 2. Install or Upgrade a Release
+> Note: Modern `kubectl` includes Kustomize via `kubectl kustomize`, but Helmfile’s chartify flow requires a standalone `kustomize` binary.
 
-Use the provided command structure (from the service’s README.md) to install:
-
-```bash
-NAMESPACE="cattle-system"
-RELEASE="rancher"
-HELM_REPO_NAME="rancher-stable"
-HELM_CHART="rancher"
-
-helm upgrade --install $RELEASE $HELM_REPO_NAME/$HELM_CHART \
-    --namespace $NAMESPACE \
-    --create-namespace \
-    --values helm-configs/$NAMESPACE/$RELEASE/values.yaml
-```
-
-### 3. Deploy Kubernetes Manifests
-
-If a chart requires additional resources (such as CRs), apply them from kube-configs/:
+## Repository Layout
 
 ```
-kubectl apply -f kube-configs/<namespace>/crs.yaml
+.
+├── helm-configs/                  # Helm values for each chart
+│   ├── cattle-system/rancher/
+│   │   └── values.yaml
+│   ├── ingress-nginx/ingress-nginx/
+│   │   └── values.yaml
+│   ├── kubernetes-dashboard/dashboard/
+│   │   └── values.yaml
+│   ├── metallb-system/metallb/
+│   │   └── values.yaml
+│   ├── monitoring/
+│   │   ├── kube-prometheus-stack/values.yaml
+│   │   ├── loki/values.yaml
+│   │   └── promtail/values.yaml
+│   └── open-webui/open-webui/
+│       └── values.yaml
+│
+├── kube-configs/                  # Raw manifests or Kustomize directories
+│   ├── kubernetes-dashboard/crs.yaml
+│   ├── local-path-storage/        # Kustomize dir for local-path-provisioner
+│   │   └── kustomization.yaml
+│   └── metallb-system/crs.yaml
+│
+├── helmfile.yaml                  # Central declarative manifest
+└── README.md
 ```
 
-### Notes
-- Each Helm chart lives in its own namespaced folder.
-- You are encouraged to follow the same pattern when adding new charts or resources.
-- This repo is environment-agnostic. Cluster-specific settings should go in the appropriate values.yaml files.
+## Helmfile Workflow
 
-### Future Improvements
-- Add CI validation for YAML syntax or Helm template linting.
-- Define cluster-specific overlays using tools like kustomize or helmfile.
+All deployments—charts and Kustomize-based resources—are driven from `helmfile.yaml`.
 
+1. **Sync repositories**  
+   ```bash
+   helmfile repos
+   ```
+
+2. **Preview changes**  
+   ```bash
+   helmfile diff
+   ```
+
+3. **Deploy or update everything**  
+   ```bash
+   helmfile apply
+   ```
+
+4. **Tear down all releases**  
+   ```bash
+   helmfile destroy
+   ```
+
+### Targeted operations
+
+- Run only a specific release:  
+  ```bash
+  helmfile -l name=metallb apply
+  ```
+- Switch environments (once you convert to `.gotmpl`):  
+  ```bash
+  helmfile -e production apply
+  ```
+
+## Handling Raw Manifests
+
+- **MetalLB & Dashboard CRs** are applied via `postsync` hooks in `helmfile.yaml`.
+- **Local Path Provisioner** is managed as a Kustomize directory; its `Namespace` is stripped out so Helmfile’s `createNamespace: true` handles namespace creation.
+
+## Example Releases
+
+```yaml
+releases:
+  - name: metallb
+    namespace: metallb-system
+    chart: metallb/metallb
+    version: 0.14.9
+    values:
+      - helm-configs/metallb-system/metallb/values.yaml
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: kubectl
+        args:
+          - apply
+          - -f
+          - kube-configs/metallb-system/crs.yaml
+
+  - name: local-path-provisioner
+    namespace: local-path-storage
+    createNamespace: true
+    chart: kube-configs/local-path-storage
+```
+
+## Future Enhancements
+
+- **CI Integration:** Add linting and `helmfile diff` checks on pull requests.
+- **Environment Overlays:** Move to a templated `helmfile.yaml.gotmpl` for distinct `dev`/`staging`/`prod` settings.
+- **Shared Templates:** Extract common release patterns into Go templates within Helmfile.
