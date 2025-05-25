@@ -21,3 +21,4 @@ spec:
     prometheus:
       prometheusSpec:
         maximumStartupDurationSeconds: 120
+    

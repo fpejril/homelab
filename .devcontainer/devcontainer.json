@@ -55,7 +55,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"ms-kubernetes-tools.vscode-kubernetes-tools"
 			]
 		}
 	},
