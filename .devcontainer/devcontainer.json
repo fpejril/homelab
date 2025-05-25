@@ -19,7 +19,7 @@
 		"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
 			"setLocale": true,
 			"theme": "powerlevel10k\\\/powerlevel10k",
-			"plugins": "git docker kubectl minikube",
+			"plugins": "git docker kubectl minikube fluxcd",
 			"desiredLocale": "en_US.UTF-8 UTF-8"
 		},
 		"./local-features/zsh-config": {},
