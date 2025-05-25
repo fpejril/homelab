@@ -1,6 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: longhorn
 resources: 
   - ../../base/controllers
 patches:
@@ -19,8 +18,8 @@ patches:
   #     kind: HelmRelease
   #     name: metallb
   #     namespace: metallb-system
-  - path: disable-traefik.yaml
-    target:
-      kind: HelmRelease
-      name: traefik
-      namespace: traefik
+  # - path: disable-traefik.yaml
+  #   target:
+  #     kind: HelmRelease
+  #     name: traefik
+  #     namespace: traefik

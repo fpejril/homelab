@@ -1,5 +1,8 @@
 # Notes
 
+## Traefik and MetalLB
+Traefik's helm release by default depends on being able to acquire a load balancer IP. For this reason, MetalLB and its configurations must be applied prior to the installation of traefik.
+
 ## FluxCD Staging Configuration
 
 In FluxCD I have:

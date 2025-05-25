@@ -1,5 +1,7 @@
 ## Bootstrap Flux on a fresh minikube environment for development
 ```bash
+minikube start
+
 # Create new branch and push it up
 BRANCH_NAME=new-branch
 git checkout -b $BRANCH_NAME
