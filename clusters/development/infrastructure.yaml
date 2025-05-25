@@ -29,6 +29,6 @@ spec:
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
-#   path: ./infrastructure/staging/configs
+#   path: ./infrastructure/development/configs
 #   prune: true
 #   wait: true

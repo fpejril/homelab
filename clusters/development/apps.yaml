@@ -10,7 +10,7 @@
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
-#   path: ./apps/staging
+#   path: ./apps/development
 #   prune: true
 #   wait: true
 #   timeout: 5m0s
