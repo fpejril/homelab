@@ -4,6 +4,8 @@ set -e
 REMOTE_HOME="/home/$_REMOTE_USER"
 FONT_DIR="$REMOTE_HOME/.fonts"
 
+mkdir -p $FONT_DIR
+
 curl -o $FONT_DIR/MesloLGS_NF_Regular.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
 curl -o $FONT_DIR/MesloLGS_NF_Bold.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
 curl -o $FONT_DIR/MesloLGS_NF_Italic.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
