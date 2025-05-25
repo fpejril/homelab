@@ -1,0 +1,8 @@
+{
+  "id": "fluxcd-config",
+  "version": "1.0.0",
+  "name": "fluxcd-config",
+  "description": "Install FluxCD",
+  "documentationURL": "",
+  "customizations": {}
+}

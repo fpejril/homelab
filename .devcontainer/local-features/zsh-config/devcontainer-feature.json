@@ -1,0 +1,14 @@
+{
+  "id": "zsh-config",
+  "version": "1.0.0",
+  "name": "zsh-config",
+  "description": "Configure Zsh",
+  "documentationURL": "",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.fontfamily": "MesloLGS NF"
+      }
+    }
+  }
+}
