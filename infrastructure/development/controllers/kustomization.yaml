@@ -4,16 +4,16 @@ kind: Kustomization
 resources: 
   - ../../base/controllers
 patches:
+  # - path: disable-cert-manager.yaml
+  #   target:
+  #     kind: HelmRelease
+  #     name: cert-manager
+  #     namespace: cert-manager
   - path: disable-longhorn.yaml
     target:
       kind: HelmRelease
       name: longhorn
       namespace: longhorn-system
-  - path: disable-cert-manager.yaml
-    target:
-      kind: HelmRelease
-      name: cert-manager
-      namespace: cert-manager
   - path: disable-metallb.yaml
     target:
       kind: HelmRelease
