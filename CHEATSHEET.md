@@ -18,3 +18,8 @@ flux bootstrap github \
     --path=clusters/development \
     --branch $(git branch --show-current)
 ```
+
+## Add all changes and push to origin
+```bash
+git add -A && git commit -m "Example commit" && git push
+```
