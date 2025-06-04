@@ -42,12 +42,15 @@ rm -f ./"$rustdesk_latest_name"
 
 # Install docker
 curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG fpejril docker
 
 # Update logind to lock on lid switch
 # Bug: Doesn't handle case where HandleLidSwitch... is set but not to lock
 grep -q "^HandleLidSwitch=lock$" /etc/systemd/logind.conf || cat <<EOF | sudo tee -a /etc/systemd/logind.conf
 HandleLidSwitch=lock
 EOF
+
+echo "Reboot required to apply pending changes!"
 
 grep -q "^HandleLidSwitchExternalPower=lock$" /etc/systemd/logind.conf || cat <<EOF | sudo tee -a /etc/systemd/logind.conf
 HandleLidSwitchExternalPower=lock
