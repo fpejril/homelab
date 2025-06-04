@@ -2,8 +2,25 @@
 # Update all packages
 sudo apt-get update && sudo apt-get full-upgrade -y && sudo apt-get autoremove
 
-# Install openssh-server
-sudo apt-get install -y openssh-server && sudo systemctl enable ssh && sudo systemctl start ssh
+# Install packages
+sudo apt-get install -y \
+  openssh-server \
+  git \
+  zsh && \
+  sudo systemctl enable ssh && \
+  sudo systemctl start ssh
+
+# Pull SSH public keys
+ssh-import-id-gh fpejril
+
+# Change default shell to zsh
+chsh -s $(which zsh)
+
+# Use zsh
+exec zsh
+
+# Install ohmyzsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install rustdesk
 # Get latest release
