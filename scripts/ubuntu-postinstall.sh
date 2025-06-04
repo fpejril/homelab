@@ -1,3 +1,4 @@
+#/usr/bin/env bash
 # Things to do after installing ubuntu on a new laptop
 # Update all packages
 sudo apt-get update && sudo apt-get full-upgrade -y && sudo apt-get autoremove
@@ -15,12 +16,19 @@ ssh-import-id-gh fpejril
 
 # Change default shell to zsh
 chsh -s $(which zsh)
+# exec zsh # Breaks process
 
-# Use zsh
-exec zsh
-
-# Install ohmyzsh
+# Install ohmyzsh and theme
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+FONTS_DIR="$HOME/.local/share/fonts"
+mkdir -p "$FONTS_DIR"
+for font_face in Regular Bold Italic "Bold Italic"; do
+  font="MesloLGS NF $font_face.ttf"
+  wget -qO "$FONTS_DIR/$font" "https://github.com/romkatv/powerlevel10k-media/raw/master/$font"
+done
+
+# TODO: After setting up dotfiles repository, clone and copy .p10k.zsh and .zshrc
 
 # Install rustdesk
 # Get latest release
