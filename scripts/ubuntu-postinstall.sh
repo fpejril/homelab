@@ -40,6 +40,9 @@ wget -qO "$rustdesk_latest_name" "$rustdesk_latest_download_url"
 sudo apt install -f ./"$rustdesk_latest_name"
 rm -f ./"$rustdesk_latest_name"
 
+# Install docker
+curl -fsSL https://get.docker.com | sudo sh
+
 # Update logind to lock on lid switch
 # Bug: Doesn't handle case where HandleLidSwitch... is set but not to lock
 grep -q "^HandleLidSwitch=lock$" /etc/systemd/logind.conf || cat <<EOF | sudo tee -a /etc/systemd/logind.conf
